@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2025, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+# Copyright (c) 2022-2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -7,7 +7,7 @@ from dataclasses import MISSING
 
 import isaaclab.sim as sim_utils
 from isaaclab.assets import ArticulationCfg, AssetBaseCfg, DeformableObjectCfg, RigidObjectCfg
-from isaaclab.envs import ManagerBasedRLEnvCfg
+from isaaclab.envs import ManagerBasedRLEnvCfg, ManagerBasedRLEnv
 from isaaclab.managers import CurriculumTermCfg as CurrTerm
 from isaaclab.managers import EventTermCfg as EventTerm
 from isaaclab.managers import ObservationGroupCfg as ObsGroup
@@ -27,6 +27,19 @@ from . import mdp
 # Scene definition
 ##
 
+"""import torch
+from isaac_lab.utils.math import quat_apply
+
+def ee_z_down_alignment(env, asset_cfg):
+    robot = env.scene[asset_cfg.asset_name]
+    body_ids = robot.find_bodies(asset_cfg.body_names)[0]
+    ee_quat = robot.data.body_quat_w[:, body_ids].squeeze(1)
+
+    z_axis = quat_apply(ee_quat, torch.tensor([0,0,1], device=ee_quat.device))
+    world_down = torch.tensor([0,0,-1], device=z_axis.device)
+    cos_angle = torch.sum(z_axis * world_down, dim=-1)
+
+    return torch.clamp(cos_angle, 0.0, 1.0)"""
 
 @configclass
 class ObjectTableSceneCfg(InteractiveSceneCfg):
@@ -160,6 +173,12 @@ class RewardsCfg:
         params={"asset_cfg": SceneEntityCfg("robot")},
     )
 
+    """ee_down = RewTerm(
+        func=ee_z_down_alignment,
+        params={"asset_cfg": SceneEntityCfg("robot", body_names=["tcp"])},
+        weight=4.0,
+    )"""
+
 
 @configclass
 class TerminationsCfg:
@@ -177,11 +196,11 @@ class CurriculumCfg:
     """Curriculum terms for the MDP."""
 
     action_rate = CurrTerm(
-        func=mdp.modify_reward_weight, params={"term_name": "action_rate", "weight": -1e-1, "num_steps": 10000}
+        func=mdp.modify_reward_weight, params={"term_name": "action_rate", "weight": -1e-1, "num_steps": 50000}
     )
 
     joint_vel = CurrTerm(
-        func=mdp.modify_reward_weight, params={"term_name": "joint_vel", "weight": -1e-1, "num_steps": 10000}
+        func=mdp.modify_reward_weight, params={"term_name": "joint_vel", "weight": -1e-1, "num_steps": 50000}
     )
 
 

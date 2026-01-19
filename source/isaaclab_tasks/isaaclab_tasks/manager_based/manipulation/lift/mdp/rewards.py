@@ -65,3 +65,19 @@ def object_goal_distance(
     distance = torch.norm(des_pos_w - object.data.root_pos_w, dim=1)
     # rewarded if the object is lifted above the threshold
     return (object.data.root_pos_w[:, 2] > minimal_height) * (1 - torch.tanh(distance / std))
+
+"""def reach_object_linear(
+        env,
+        threshold: float,
+        object_cfg: SceneEntityCfg = SceneEntityCfg("object"),
+        ee_frame_cfg: SceneEntityCfg = SceneEntityCfg("ee_frame"),
+):
+    object = env.scene[object_cfg.name]
+    ee_frame = env.scene[ee_frame_cfg.name]
+
+    cube_pos_w = object.data.root_pos_w
+    ee_w = ee_frame.data.target_pos_w[..., 0, :]
+    dist = torch.norm(cube_pos_w - ee_w, dim=1)
+    reward = -dist
+    reward += (dist < threshold) * 5.0
+    return reward"""

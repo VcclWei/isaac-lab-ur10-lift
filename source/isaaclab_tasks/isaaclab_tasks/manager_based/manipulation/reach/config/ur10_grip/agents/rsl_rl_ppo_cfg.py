@@ -9,11 +9,11 @@ from isaaclab_rl.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlPpoActorCriticCfg, R
 
 
 @configclass
-class UR10ReachPPORunnerCfg(RslRlOnPolicyRunnerCfg):
+class UR10gripReachPPORunnerCfg(RslRlOnPolicyRunnerCfg):
     num_steps_per_env = 24
     max_iterations = 2000
     save_interval = 200
-    experiment_name = "reach_ur10"
+    experiment_name = "reach_ur10grip"
     run_name = ""
     policy = RslRlPpoActorCriticCfg(
         init_noise_std=1.0,
