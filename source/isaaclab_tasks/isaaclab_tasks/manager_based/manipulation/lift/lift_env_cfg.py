@@ -27,20 +27,6 @@ from . import mdp
 # Scene definition
 ##
 
-"""import torch
-from isaac_lab.utils.math import quat_apply
-
-def ee_z_down_alignment(env, asset_cfg):
-    robot = env.scene[asset_cfg.asset_name]
-    body_ids = robot.find_bodies(asset_cfg.body_names)[0]
-    ee_quat = robot.data.body_quat_w[:, body_ids].squeeze(1)
-
-    z_axis = quat_apply(ee_quat, torch.tensor([0,0,1], device=ee_quat.device))
-    world_down = torch.tensor([0,0,-1], device=z_axis.device)
-    cos_angle = torch.sum(z_axis * world_down, dim=-1)
-
-    return torch.clamp(cos_angle, 0.0, 1.0)"""
-
 @configclass
 class ObjectTableSceneCfg(InteractiveSceneCfg):
     """Configuration for the lift scene with a robot and a object.
@@ -172,13 +158,6 @@ class RewardsCfg:
         weight=-1e-4,
         params={"asset_cfg": SceneEntityCfg("robot")},
     )
-
-    """ee_down = RewTerm(
-        func=ee_z_down_alignment,
-        params={"asset_cfg": SceneEntityCfg("robot", body_names=["tcp"])},
-        weight=4.0,
-    )"""
-
 
 @configclass
 class TerminationsCfg:
