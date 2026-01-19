@@ -16,14 +16,16 @@ Reference: https://github.com/ros-industrial/universal_robot
 import isaaclab.sim as sim_utils
 from isaaclab.actuators import ImplicitActuatorCfg
 from isaaclab.assets.articulation import ArticulationCfg
-
+import os
 ##
 # Configuration
 ##
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
 UR10_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path="/home/wei/IsaacLab/source/isaaclab_assets/isaaclab_assets/robots/UR10/ur10_grip.usd",
+        usd_path=f"{current_dir}, "ur10", "ur10_grip.usd",
         activate_contact_sensors=False,
         rigid_props=sim_utils.RigidBodyPropertiesCfg(
             disable_gravity=False,

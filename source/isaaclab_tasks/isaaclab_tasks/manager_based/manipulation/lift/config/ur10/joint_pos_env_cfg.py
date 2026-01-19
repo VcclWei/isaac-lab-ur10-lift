@@ -36,13 +36,6 @@ class UR10CubeLiftEnvCfg(LiftEnvCfg):
             scale=0.5, 
             use_default_offset=True
         )
-        """self.actions.gripper_action = mdp.BinaryJointPositionActionCfg(
-            asset_name="robot",
-            joint_names=["finger_joint"],
-            open_command_expr={"finger_joint": 0.0},
-            close_command_expr={"finger_joint": math.radians(47.0)},
-        )"""
-        
         
         self.actions.gripper_action = mdp.BinaryJointPositionActionCfg(
             asset_name="robot",
